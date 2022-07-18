@@ -51,7 +51,8 @@ export default function SignUp() {
     ) {
       alert("Please Enter value");
     } else {
-      navigatetoUser(`/login/${newrecords.email}/${newrecords.password}`);
+      navigatetoUser(`/login/${newrecords.name}/${newrecords.email}/${newrecords.password}`);
+      // navigatetoUser(`/user/${newrecords.name}/${newrecords.email}`)
     }
   };
 

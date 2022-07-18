@@ -5,12 +5,10 @@ import { useParams , useNavigate } from 'react-router-dom';
 export default function Login() {
  const [email , setEmail] = useState("");
  const [password , setPassword] = useState("");
- const useremail = useParams();
- const userpassword = useParams();
- const username = useParams()
- const [records , setRecords] = useState({
-  useremail , userpassword , username
-})
+ const {useremail} = useParams();
+ const {userpassword} = useParams();
+ const {username} = useParams();
+ const [records , setRecords] = useState([]);
  const navigatetoUser = useNavigate();
 console.log(records);
 
@@ -23,7 +21,7 @@ const PasswordChanger = (event)=>{
   setPassword(NewValue);
 }
 const LoginFunction = ()=>{
-  if(email === records.useremail  || password === records.userpassword){
+  if(email === useremail  || password === userpassword){
     alert("Success")
   }else {
     alert("Enter Valid Details")
@@ -33,7 +31,7 @@ const LoginFunction = ()=>{
 const handelsubmit = (event) => {
   event.preventDefault();
   const id = new Date().getTime().toString();
-  const newrecords = { email, password, id };
+  const newrecords = {username , email, password, id };
   console.log(newrecords.email);
   setRecords(records , newrecords);
   if (
@@ -41,7 +39,7 @@ const handelsubmit = (event) => {
     newrecords.password === "") {
     alert("Please Enter value");
   } else {
-    navigatetoUser(`/user/${records.useremail}/${newrecords.email}/${newrecords.password}`);
+    navigatetoUser(`/user/${{username}}/${newrecords.email}/${newrecords.password}`);
   }
 };
 
