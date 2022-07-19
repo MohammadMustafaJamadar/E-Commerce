@@ -1,16 +1,15 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 export default function Login(props) {
+  const {setUserOnLogin} = props;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [records, setRecords] = useState([]);
   const navigatetoUser = useNavigate();
-  const newdata = JSON.parse(localStorage.getItem("NewData"));
-  console.log(newdata.password);
   
-
   const EmailChnager = (event) => {
     const NewValue = event.target.value;
     setEmail(NewValue);
@@ -22,23 +21,21 @@ export default function Login(props) {
 
   const handelsubmit = (event) => {
     event.preventDefault();
-    const id = new Date().getTime().toString();
-    const newrecords = { email, password, id };
-    console.log(newrecords.email);
-    setRecords(records, newrecords);
+    const newrecords = { email, password};
 
-    if (newrecords.email === "" || newrecords.password === "") {
-      alert("Please Enter value");
-    } else if (newrecords.email !== newdata.email) {
-      alert("Invalid Input");
-    } else if (newrecords.password !== newdata.password) {
-      alert("Invalid Inpur");
-    } else {
-      navigatetoUser(`/user`);
+    if(email && password){
+      axios.post("http://localhost:9000/login" , newrecords)
+      .then((res)=>{
+        alert(res.data.massage);
+        setUserOnLogin(res.data.dataOfUser)
+        navigatetoUser("/user");
+
+      })
+    }else{
+      alert("Invalid Input")
     }
-  };
 
-  console.log(email, password);
+  };
   return (
     <>
       
