@@ -14,8 +14,8 @@ export default function AllRoutes() {
     <Footer/>
     <Routes>
       <Route path='/'></Route>
-      <Route path='/signup' element={<SignUp/>}></Route>
-      <Route path='login/:username/:useremail/:userpassword' element={<Login/>}></Route>
+      <Route path='/signup' element={<SignUp />}></Route>
+      <Route path='login/:username/:useremail/:userpassword' element={<Login title="MMMJJ"/>}></Route>
       <Route path='/user/:username/:email' element={<User/>}></Route>
     </Routes>
     </Router>

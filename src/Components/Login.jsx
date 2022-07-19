@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useParams , useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Login(props) {
  const [email , setEmail] = useState("");
  const [password , setPassword] = useState("");
  const {useremail} = useParams();
@@ -11,6 +11,7 @@ export default function Login() {
  const [records , setRecords] = useState([]);
  const navigatetoUser = useNavigate();
 console.log(records);
+const {title } =props
 
 const EmailChnager = (event)=>{
   const NewValue = event.target.value
@@ -21,7 +22,7 @@ const PasswordChanger = (event)=>{
   setPassword(NewValue);
 }
 const LoginFunction = ()=>{
-  if(email === useremail  || password === userpassword){
+  if(email === useremail  && password === userpassword){
     alert("Success")
   }else {
     alert("Enter Valid Details")
@@ -31,12 +32,13 @@ const LoginFunction = ()=>{
 const handelsubmit = (event) => {
   event.preventDefault();
   const id = new Date().getTime().toString();
-  const newrecords = {username , email, password, id };
+  const newrecords = { email, password, id };
   console.log(newrecords.email);
   setRecords(records , newrecords);
+  
   if (
     newrecords.email === "" ||
-    newrecords.password === "") {
+    newrecords.password === "" || newrecords.email === !useremail || newrecords.password === !userpassword) {
     alert("Please Enter value");
   } else {
     navigatetoUser(`/user/${{username}}/${newrecords.email}/${newrecords.password}`);
@@ -47,6 +49,7 @@ const handelsubmit = (event) => {
 console.log(email , password);
   return (
     <>
+    <h1>{title}</h1>
     <form onSubmit={handelsubmit}>
       <div className='container'>
   <div className="mb-3">

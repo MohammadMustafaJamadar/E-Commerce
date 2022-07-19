@@ -42,12 +42,14 @@ export default function SignUp() {
     const id = new Date().getTime().toString();
     const newrecords = { name, email, password, confirmpass, id };
     console.log(newrecords.name);
+    localStorage.setItem("NewData" , newrecords);
     setRecords(...records, newrecords);
     if (
       newrecords.name === "" ||
       newrecords.email === "" ||
       newrecords.password === "" ||
-      newrecords.confirmpass === ""
+      newrecords.confirmpass === "" ||
+      newrecords.password === !newrecords.confirmpass
     ) {
       alert("Please Enter value");
     } else {
