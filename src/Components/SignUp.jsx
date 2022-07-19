@@ -1,13 +1,13 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
-  const [records, setRecords] = useState([]);
   const navigatetoUser = useNavigate();
 
   const NameChanger = (event) => {
@@ -29,27 +29,20 @@ export default function SignUp() {
 
   const handelsubmit = (event) => {
     event.preventDefault();
-    const id = new Date().getTime().toString();
-    const newrecords = { name, email, password, confirmpass, id };
-    console.log(newrecords.name);
-    localStorage.setItem("NewData" , JSON.stringify(newrecords));
-    setRecords(...records, newrecords);
-    if (
-      newrecords.name === "" ||
-      newrecords.email === "" ||
-      newrecords.password === "" ||
-      newrecords.confirmpass === "" 
-    ) {
-      alert("Please Enter value");
-    }else if(newrecords.password !== newrecords.confirmpass){
-      alert("Not Valid Input")
-    } 
-    else {
-      navigatetoUser("/login");
-      // navigatetoUser(`/user/${newrecords.name}/${newrecords.email}`)
-    }
-  };
+    const newrecords = { name, email, password, confirmpass };
 
+    if(name && email && password && (password === confirmpass)){
+      axios.post("http://localhost:9000/signup" , newrecords)
+      .then((res)=>{
+        alert(res.data.massage);
+        navigatetoUser("/login")
+      })
+
+    }else{
+      alert("Inalid input")
+    }
+  
+  }
   return (
     <>
       <h1 style={{ textAlign: "center" }}> SignUp </h1>
