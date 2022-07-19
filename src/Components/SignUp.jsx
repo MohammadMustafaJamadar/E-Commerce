@@ -27,33 +27,25 @@ export default function SignUp() {
     setConfirmPass(value);
   };
 
-  const SignUpFunction = () => {
-    if (name === "" || email === "" || password === "") {
-      alert("invalid input");
-    } else if (password === !confirmpass) {
-      alert("password does not match");
-    } else {
-      alert("success");
-    }
-  };
-
   const handelsubmit = (event) => {
     event.preventDefault();
     const id = new Date().getTime().toString();
     const newrecords = { name, email, password, confirmpass, id };
     console.log(newrecords.name);
-    localStorage.setItem("NewData" , newrecords);
+    localStorage.setItem("NewData" , JSON.stringify(newrecords));
     setRecords(...records, newrecords);
     if (
       newrecords.name === "" ||
       newrecords.email === "" ||
       newrecords.password === "" ||
-      newrecords.confirmpass === "" ||
-      newrecords.password === !newrecords.confirmpass
+      newrecords.confirmpass === "" 
     ) {
       alert("Please Enter value");
-    } else {
-      navigatetoUser(`/login/${newrecords.name}/${newrecords.email}/${newrecords.password}`);
+    }else if(newrecords.password !== newrecords.confirmpass){
+      alert("Not Valid Input")
+    } 
+    else {
+      navigatetoUser("/login");
       // navigatetoUser(`/user/${newrecords.name}/${newrecords.email}`)
     }
   };
@@ -120,7 +112,6 @@ export default function SignUp() {
           <button
             type="submit"
             className="btn btn-primary"
-            onClick={SignUpFunction}
           >
             Submit
           </button>

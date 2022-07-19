@@ -29,12 +29,12 @@ export default function NavBar(props) {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link " to="/login/mj/mj@gmail.com/12345">
+                <Link className="nav-link " to="/login">
                   Login
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link " to="/user/mj/mj@gmail">
+                <Link className="nav-link " to="/user">
                   User
                 </Link>
               </li>

@@ -15,8 +15,8 @@ export default function AllRoutes() {
     <Routes>
       <Route path='/'></Route>
       <Route path='/signup' element={<SignUp />}></Route>
-      <Route path='login/:username/:useremail/:userpassword' element={<Login title="MMMJJ"/>}></Route>
-      <Route path='/user/:username/:email' element={<User/>}></Route>
+      <Route path='login' element={<Login/>}></Route>
+      <Route path='/user' element={<User title="Information"/>}></Route>
     </Routes>
     </Router>
 

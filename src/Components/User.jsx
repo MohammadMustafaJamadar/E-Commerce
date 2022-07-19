@@ -1,11 +1,9 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import  './Css/Profile.css'
 
-export default function User() {
-  const { username } = useParams();
-  const { email } = useParams();
-
+export default function User(props) {
+  const {title} = props
+  const newdata = JSON.parse(localStorage.getItem("NewData"));
   return (
     <div>
       <div className="page-content page-container" id="page-content">
@@ -23,9 +21,9 @@ export default function User() {
                           alt="User-Profile"
                         />
                       </div>
-                      <h6 className="f-w-600">{username}</h6>
+                      <h6 className="f-w-600">{title}</h6>
                       <p>Web Designer</p>
-                      <i className=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                      <i className=" mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16">{newdata.name}</i>
                     </div>
                   </div>
                   <div className="col-sm-8">
@@ -36,7 +34,7 @@ export default function User() {
                       <div className="row">
                         <div className="col-sm-6">
                           <p className="m-b-10 f-w-600">Email</p>
-                          <h6 className="text-muted f-w-400">{email}</h6>
+                          <h6 className="text-muted f-w-400">{newdata.email}</h6>
                         </div>
                       </div>
                     </div>
