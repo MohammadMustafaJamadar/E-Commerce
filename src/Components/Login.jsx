@@ -7,7 +7,7 @@ export default function Login(props) {
   const [password, setPassword] = useState("");
   const navigatetoUser = useNavigate();
   const newdata = JSON.parse(localStorage.getItem("NewData"));
-  console.log(newdata.password);
+  
   
 
   const EmailChnager = (event) => {
@@ -34,8 +34,7 @@ export default function Login(props) {
       navigatetoUser(`/user`);
     }
   };
-
-  console.log(email, password);
+  
   return (
     <>
       

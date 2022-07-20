@@ -7,7 +7,6 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
-  const [records, setRecords] = useState([]);
   const navigatetoUser = useNavigate();
 
   const NameChanger = (event) => {
@@ -30,10 +29,9 @@ export default function SignUp() {
   const handelsubmit = (event) => {
     event.preventDefault();
     const id = new Date().getTime().toString();
-    const newrecords = { name, email, password, confirmpass, id };
-    console.log(newrecords.name);
+    const newrecords =[{ name, email, password, confirmpass, id } ];
+  
     localStorage.setItem("NewData" , JSON.stringify(newrecords));
-    setRecords(...records, newrecords);
     if (
       newrecords.name === "" ||
       newrecords.email === "" ||
@@ -46,7 +44,6 @@ export default function SignUp() {
     } 
     else {
       navigatetoUser("/login");
-      // navigatetoUser(`/user/${newrecords.name}/${newrecords.email}`)
     }
   };
 
