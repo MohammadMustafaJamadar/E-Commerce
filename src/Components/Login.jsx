@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [records, setRecords] = useState([]);
   const navigatetoUser = useNavigate();
   const newdata = JSON.parse(localStorage.getItem("NewData"));
   console.log(newdata.password);
@@ -24,15 +23,13 @@ export default function Login(props) {
     event.preventDefault();
     const id = new Date().getTime().toString();
     const newrecords = { email, password, id };
-    console.log(newrecords.email);
-    setRecords(records, newrecords);
-
+    
     if (newrecords.email === "" || newrecords.password === "") {
       alert("Please Enter value");
     } else if (newrecords.email !== newdata.email) {
       alert("Invalid Input");
     } else if (newrecords.password !== newdata.password) {
-      alert("Invalid Inpur");
+      alert("Invalid Input");
     } else {
       navigatetoUser(`/user`);
     }
@@ -75,17 +72,6 @@ export default function Login(props) {
               name="UserPassword"
               id="UserPassword"
             />
-          </div>
-          <div className="mb-3 form-check">
-            <input
-              type="checkbox"
-              className="form-check-input"
-              id="UserPasswordCheck"
-              name="UserPasswordCheck"
-            />
-            <label className="form-check-label" htmlFor="UserPasswordCheck">
-              Check me out
-            </label>
           </div>
           <button type="submit" className="btn btn-primary">
             Submit

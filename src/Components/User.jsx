@@ -4,6 +4,7 @@ import  './Css/Profile.css'
 export default function User(props) {
   const {title} = props
   const newdata = JSON.parse(localStorage.getItem("NewData"));
+  
   return (
     <div>
       <div className="page-content page-container" id="page-content">
