@@ -24,6 +24,7 @@ export default function Login(props) {
     const id = new Date().getTime().toString();
     const newrecords = { email, password, id };
     
+    
     if (newrecords.email === "" || newrecords.password === "") {
       alert("Please Enter value");
     } else if (newrecords.email !== newdata.email) {

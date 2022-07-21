@@ -29,7 +29,7 @@ export default function SignUp() {
   const handelsubmit = (event) => {
     event.preventDefault();
     const id = new Date().getTime().toString();
-    const newrecords =[{ name, email, password, confirmpass, id } ];
+    const newrecords ={ name, email, password, confirmpass, id } ;
   
     localStorage.setItem("NewData" , JSON.stringify(newrecords));
     if (

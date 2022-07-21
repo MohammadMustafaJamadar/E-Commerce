@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function NavBar(props) {
-  const { title } = props;
+  const { title , user } = props;
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -24,14 +24,22 @@ export default function NavBar(props) {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link className="nav-link " aria-current="page" to="/signup">
-                  SignUp
-                </Link>
+              {
+            user && user.id ? null : 
+            <Link className="nav-link " aria-current="page" to="/signup">
+            SignUp
+          </Link>
+          }
+                
               </li>
               <li className="nav-item">
-                <Link className="nav-link " to="/login">
+              {
+            user && user.id ? null : 
+            <Link className="nav-link " to="/login">
                   Login
                 </Link>
+          }
+                
               </li>
               <li className="nav-item">
                 <Link className="nav-link " to="/user">
