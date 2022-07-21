@@ -23,7 +23,7 @@ export default function AllRoutes() {
       <Route path='login' element={<Login/>}></Route>
       <Route path='/user' element={
       user && user.id ? <User title="Information" user={user} setUser={setUser}/> 
-      : <SignUp setUser={setUser} />
+      : <Login/>
       }></Route>
     </Routes>
     </Router>

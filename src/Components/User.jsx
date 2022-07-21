@@ -43,7 +43,7 @@ export default function User(props) {
                         </div>
                       </div>
                       <button className="btn btn-primary" onClick={()=>{
-                        setUser(localStorage.clear("NewData"))
+                        setUser(null)
                       }}>LogOut</button>
                     </div>
                   </div>
