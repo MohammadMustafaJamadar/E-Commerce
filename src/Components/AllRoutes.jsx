@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {BrowserRouter as Router , Routes , Route} from "react-router-dom";
-import Footer from './Footer';
-import Home from './Home';
-import Login from './Login';
-import NavBar from './NavBar';
-import SignUp from './SignUp';
-import User from './User';
+import Footer from './Pages/Footer';
+import Home from './Pages/Home';
+import Login from './Pages/Login';
+import NavBar from './Pages/NavBar';
+import SignUp from './Pages/SignUp';
+import User from './Pages/User';
 
 export default function AllRoutes() {
  const [user , setUser] = useState(JSON.parse(localStorage.getItem("NewData")));
@@ -15,6 +15,8 @@ export default function AllRoutes() {
       {
         user && user.id ? <NavBar title="ApExCart" user={user}/> : <NavBar title="ApExCart" user={user}/> 
       }
+
+    
     
     <Footer/>
     <Routes>
@@ -25,7 +27,9 @@ export default function AllRoutes() {
       user && user.id ? <User title="Information" user={user} setUser={setUser}/> 
       : <Login/>
       }></Route>
+      
     </Routes>
+    
     </Router>
 
 

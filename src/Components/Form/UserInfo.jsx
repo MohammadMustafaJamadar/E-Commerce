@@ -1,11 +1,12 @@
-import React from "react";
-import "./Css/Profile.css";
+import React from 'react';
+import '../Css/Profile.css'
 
-export default function User(props) {
+export default function UserInfo(props) {
   const { title , user , setUser } = props;
   
-
   return (
+    <>
+    
     <div>
       <div className="page-content page-container" id="page-content">
         <div className="padding">
@@ -54,5 +55,8 @@ export default function User(props) {
         </div>
       </div>
     </div>
-  );
+
+    
+    </>
+  )
 }
