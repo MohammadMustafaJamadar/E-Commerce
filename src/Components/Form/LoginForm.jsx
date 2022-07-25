@@ -1,44 +1,51 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputChanger from "../utils/general";
+import {PassWordvalidate} from '../utils/Validation'
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [ValidationError , setValidationError] = useState(null)
   const navigatetoUser = useNavigate();
-  const newdata = JSON.parse(localStorage.getItem("NewData"));
+  
   
   
 
   const EmailChnager = (event) => {
-    const NewValue = event.target.value;
-    setEmail(NewValue);
+    InputChanger(event , setEmail)
+
   };
   const PasswordChanger = (event) => {
-    const NewValue = event.target.value;
-    setPassword(NewValue);
+     InputChanger(event , setPassword );
+    
   };
 
   const handelsubmit = (event) => {
     event.preventDefault();
-    const id = new Date().getTime().toString();
-    const newrecords = { email, password, id };
-    
-    
-    if (newrecords.email === "" || newrecords.password === "") {
-      alert("Please Enter value");
-    } else if (newrecords.email !== newdata.email) {
-      alert("Invalid Input");
-    } else if (newrecords.password !== newdata.password) {
-      alert("Invalid Input");
-    } else {
-      navigatetoUser(`/user`);
+
+    const ValidationResult = PassWordvalidate(password);
+    if(ValidationResult.result === false){
+      setValidationError(ValidationResult.massage);
+      return;
     }
+
+    const userlist = JSON.parse(localStorage.getItem("NewData"))
+    const result = userlist.find((user)=> user.email === email && user.password === password)
+    
+    if(result){
+      localStorage.setItem("Logginuser" , JSON.stringify(result))
+      navigatetoUser("/user");
+    }else{
+      setValidationError("User not found")
+    }
+
   };
   
   return (
     <>
-      
+      <p>{ValidationError}</p>
       <form onSubmit={handelsubmit}>
         <div className="container">
           <div className="mb-3">

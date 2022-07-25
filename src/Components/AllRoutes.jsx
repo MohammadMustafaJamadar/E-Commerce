@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {BrowserRouter as Router , Routes , Route} from "react-router-dom";
 import Footer from './Pages/Footer';
 import Home from './Pages/Home';
@@ -8,12 +8,13 @@ import SignUp from './Pages/SignUp';
 import User from './Pages/User';
 
 export default function AllRoutes() {
- const [user , setUser] = useState(JSON.parse(localStorage.getItem("NewData")));
+ const user  = JSON.parse(localStorage.getItem('Logginuser'))
+ console.log(user);
   return (
    <>
     <Router>
       {
-        user && user.id ? <NavBar title="ApExCart" user={user}/> : <NavBar title="ApExCart" user={user}/> 
+       user && user.id ? <NavBar title="ApExCart" user={user} /> : <NavBar title="ApExCart" user={user} />  
       }
 
     
@@ -24,8 +25,9 @@ export default function AllRoutes() {
       <Route path='/signup' element={<SignUp />}></Route>
       <Route path='login' element={<Login/>}></Route>
       <Route path='/user' element={
-      user && user.id ? <User title="Information" user={user} setUser={setUser}/> 
-      : <Login/>
+        user && user.id ?
+       <User title="Information" /> : <Login/>
+    
       }></Route>
       
     </Routes>

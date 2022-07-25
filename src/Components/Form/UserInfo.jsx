@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../Css/Profile.css'
 
 export default function UserInfo(props) {
   const { title , user , setUser } = props;
+  const NavigateUser = useNavigate();
+
   
   return (
     <>
@@ -44,7 +47,9 @@ export default function UserInfo(props) {
                         </div>
                       </div>
                       <button className="btn btn-primary" onClick={()=>{
-                        setUser(localStorage.clear("NewData"))
+                        setUser(localStorage.removeItem("Logginuser"));
+                        NavigateUser("/")
+                        
                       }}>LogOut</button>
                     </div>
                   </div>

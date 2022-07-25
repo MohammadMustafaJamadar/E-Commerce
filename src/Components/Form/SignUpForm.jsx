@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import InputChanger  from '../utils/general'
+import {PassWordvalidate , NameValidate , EmailValidate} from "../utils/Validation"
 
 export default function SignUpForm() {
   const [name, setName] = useState("");
@@ -8,47 +10,57 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
   const navigatetoUser = useNavigate();
+  const [ValidationError , setValidationError] = useState(null);
 
   const NameChanger = (event) => {
-    const value = event.target.value;
-    setName(value);
+   InputChanger(event ,setName );
   };
   const EmailChanger = (event) => {
-    const value = event.target.value;
-    setEmail(value);
+   InputChanger(event ,setEmail );
+   
+
   };
   const PasswordChanger = (event) => {
-    const value = event.target.value;
-    setPassword(value);
+   InputChanger(event , setPassword );
+    
   };
   const ConfirmPassChanger = (event) => {
-    const value = event.target.value;
-    setConfirmPass(value);
+    InputChanger(event , setConfirmPass)
   };
 
   const handelsubmit = (event) => {
     event.preventDefault();
+    const ValidationResultForPass = PassWordvalidate(password)  
+    const ValidationResultForName = NameValidate(name)
+    const ValidationResultForEmail = EmailValidate(email)
+
+    if(ValidationResultForPass.result === false){
+      setValidationError(ValidationResultForPass.massage)
+      return;
+    }else if(ValidationResultForName.result === false){
+      setValidationError(ValidationResultForName.massage)
+      return;
+    }else if(ValidationResultForEmail.result === false){
+      setValidationError(ValidationResultForEmail.massage);
+      return;
+    }
+
     const id = new Date().getTime().toString();
-    const newrecords ={ name, email, password, confirmpass, id } ;
-  
-    localStorage.setItem("NewData" , JSON.stringify(newrecords));
-    if (
-      newrecords.name === "" ||
-      newrecords.email === "" ||
-      newrecords.password === "" ||
-      newrecords.confirmpass === "" 
-    ) {
-      alert("Please Enter value");
-    }else if(newrecords.password !== newrecords.confirmpass){
-      alert("Not Valid Input")
-    } 
-    else {
-      navigatetoUser("/login");
+    const newrecords ={ name, email, password, confirmpass, id };
+    
+    let userlist = JSON.parse(localStorage.getItem("NewData")) ;
+    userlist = userlist === null ? [] : userlist;
+    
+    
+    if(newrecords.password === newrecords.confirmpass){
+      localStorage.setItem("NewData" , JSON.stringify([...userlist , newrecords]));
+      navigatetoUser("/login")
     }
   };
 
   return (
     <>
+      <p>{ValidationError}</p>
       <h1 style={{ textAlign: "center" }}> SignUp </h1>
 
       <form onSubmit={handelsubmit}>
