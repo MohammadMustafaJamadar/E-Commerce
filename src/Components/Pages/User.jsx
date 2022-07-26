@@ -1,14 +1,13 @@
-import React, { useState } from "react";
 import UserInfo from "../Form/UserInfo";
 
-export default function User() {
- const [user , setUser] = useState(JSON.parse(localStorage.getItem("Logginuser")))
-  
+export default function  User(props) {
+ 
+ const {user , setUseronLogin} = props
 
   return (
     <>
     
-    <UserInfo user={user} setUser={setUser} />
+    <UserInfo user={user} setUseronLogin={setUseronLogin} />
 
     </>
       );

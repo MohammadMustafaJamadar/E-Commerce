@@ -28,7 +28,7 @@ export default function SignUpForm() {
     InputChanger(event , setConfirmPass)
   };
 
-  const handelsubmit = (event) => {
+  const handelsubmit = async (event) => {
     event.preventDefault();
     const ValidationResultForPass = PassWordvalidate(password)  
     const ValidationResultForName = NameValidate(name)
@@ -48,12 +48,12 @@ export default function SignUpForm() {
     const id = new Date().getTime().toString();
     const newrecords ={ name, email, password, confirmpass, id };
     
-    let userlist = JSON.parse(localStorage.getItem("NewData")) ;
+    let userlist = await JSON.parse(localStorage.getItem("NewData")) ;
     userlist = userlist === null ? [] : userlist;
     
     
     if(newrecords.password === newrecords.confirmpass){
-      localStorage.setItem("NewData" , JSON.stringify([...userlist , newrecords]));
+      await localStorage.setItem("NewData" , JSON.stringify([...userlist , newrecords]));
       navigatetoUser("/login")
     }
   };

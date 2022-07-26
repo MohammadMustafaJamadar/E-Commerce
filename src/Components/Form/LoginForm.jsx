@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import InputChanger from "../utils/general";
 import {PassWordvalidate} from '../utils/Validation'
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+  const {setUseronLogin} = props
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ValidationError , setValidationError] = useState(null)
@@ -22,7 +24,7 @@ export default function LoginForm() {
     
   };
 
-  const handelsubmit = (event) => {
+  const handelsubmit = async (event) => {
     event.preventDefault();
 
     const ValidationResult = PassWordvalidate(password);
@@ -31,11 +33,12 @@ export default function LoginForm() {
       return;
     }
 
-    const userlist = JSON.parse(localStorage.getItem("NewData"))
-    const result = userlist.find((user)=> user.email === email && user.password === password)
+     const userlist =await  JSON.parse(localStorage.getItem("NewData"))
+     const result = await userlist.find((user)=> user.email === email && user.password === password)
     
     if(result){
       localStorage.setItem("Logginuser" , JSON.stringify(result))
+      setUseronLogin(JSON.parse(localStorage.getItem("Logginuser")));
       navigatetoUser("/user");
     }else{
       setValidationError("User not found")
