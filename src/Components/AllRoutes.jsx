@@ -8,7 +8,7 @@ import SignUp from './Pages/SignUp';
 import User from './Pages/User';
 
 export default function AllRoutes() {
-const [user , setUseronLogin] = useState({});
+const [user , setUseronLogin] = useState(JSON.parse(localStorage.getItem("Logginuser")));
  
   return (
    <>
