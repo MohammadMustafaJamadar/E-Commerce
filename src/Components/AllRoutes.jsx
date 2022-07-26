@@ -9,12 +9,13 @@ import User from './Pages/User';
 
 export default function AllRoutes() {
 const [user , setUseronLogin] = useState(JSON.parse(localStorage.getItem("Logginuser")));
+const [Checked , setChecked] = useState(JSON.parse(localStorage.getItem("PreviousUser")));
  
   return (
    <>
     <Router>
       {
-       user && user.id ? <NavBar title="ApExCart" user={user} /> : <NavBar title="ApExCart" user={user} />  
+       user && user.id ? <NavBar title="ApExCart" user={user} Checked={Checked} /> : <NavBar title="ApExCart" user={user} Checked={Checked} />  
       }
 
     
@@ -23,11 +24,11 @@ const [user , setUseronLogin] = useState(JSON.parse(localStorage.getItem("Loggin
     <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path='/signup' element={<SignUp />}></Route>
-      <Route path='login' element={<Login setUseronLogin={setUseronLogin}/>}></Route>
+      <Route path='login' element={<Login setUseronLogin={setUseronLogin} setChecked={setChecked}/>}></Route>
       <Route path='/user' element={
-        user && user.id ?
-       <User title="Information" user={user} setUseronLogin={setUseronLogin} /> : <Login setUseronLogin={setUseronLogin}/>
-    
+        user && user.id ? 
+       <User title="Information" user={user} setUseronLogin={setUseronLogin} setChecked={setChecked} Checked={Checked} /> : <Login setUseronLogin={setUseronLogin} setChecked={setChecked}/>
+        
       }></Route>
       
     </Routes>

@@ -1,12 +1,21 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Css/Profile.css'
 
 export default function UserInfo(props) {
-  const { title , user , setUseronLogin } = props;
+  const { title , user , setUseronLogin , setChecked , Checked } = props;
+
   const NavigateUser = useNavigate();
 
+  const HandelClick = async()=>{
+    
+    
+   await setChecked((localStorage.setItem("PreviousUser" , JSON.stringify( user))));
+    
+    
+  }
+
   
+
   return (
     <>
     
@@ -46,10 +55,13 @@ export default function UserInfo(props) {
                           </h6>
                         </div>
                       </div>
+                      <div className='mb-3 for-check'>
+                      <input type="checkbox"  onClick={HandelClick} className="form-check-input" id="SaveInfo"/>
+                     <label className="form-check-label"  htmlFor="SaveInfo">Save Info</label>
+                      </div>
                       <button className="btn btn-primary" onClick={()=>{
                         setUseronLogin(localStorage.removeItem("Logginuser"))
-                        NavigateUser("/")
-                        
+                        NavigateUser("/login")
                       }}>LogOut</button>
                     </div>
                   </div>

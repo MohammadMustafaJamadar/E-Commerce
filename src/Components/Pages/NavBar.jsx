@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function NavBar(props) {
-  const { title, user } = props;
+  const { title, user  } = props;
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -44,10 +44,14 @@ export default function NavBar(props) {
                 )}
               </li>
               <li className="nav-item">
+                
                 <Link className="nav-link " to="/user">
                   User
                 </Link>
+
               </li>
+
+                
             </ul>
           </div>
         </div>
