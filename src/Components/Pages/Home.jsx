@@ -2,10 +2,20 @@ import React from "react";
 import { useState } from "react";
 import Menu from "../Css/items/Menu";
 
+const AllCatogry = [...new Set( Menu.map((currentElement)=> currentElement.category)) , "All Electronic items"]
+
+
 export default function Home() {
   const [items, setItems] = useState(Menu);
+  const [CatItems , setCatitems] = useState(AllCatogry)
 
   const filterItems = (categoryItems) => {
+    if(categoryItems === "All Electronic items"){
+      setItems(Menu)
+      return
+    }
+
+
     const updatedValue = Menu.filter((currentElement) => {
       return currentElement.category === categoryItems;
     });
@@ -20,38 +30,19 @@ export default function Home() {
       <hr />
       <div className="menu-tabs comtainer">
         <div className="menu-tab d-flex justify-content-around">
-          <button
-            className="btn btn-warning"
-            onClick={() => {
-              filterItems("Smart Phone");
-            }}
-          >
-            Smart Phones
-          </button>
-          <button
-            className="btn btn-warning"
-            onClick={() => {
-              filterItems("Laptops");
-            }}
-          >
-            Laptops
-          </button>
-          <button
-            className="btn btn-warning"
-            onClick={() => {
-              filterItems("Smart Watch");
-            }}
-          >
-            Smart Watch
-          </button>
-          <button
-            className="btn btn-warning"
-            onClick={() => {
-              setItems(Menu);
-            }}
-          >
-            All Electronic Items
-          </button>
+         {
+          CatItems.map((currentElement)=>{
+            return <button
+              className="btn btn-warning"
+              onClick={() => {
+                filterItems(currentElement);
+              }}
+            >
+              {currentElement}
+            </button>
+          })
+         }
+         
         </div>
       </div>
       <div className="menu-items container-fluid mt-5 ">
