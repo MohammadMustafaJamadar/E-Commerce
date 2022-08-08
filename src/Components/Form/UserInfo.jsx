@@ -1,11 +1,20 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Css/Profile.css'
 
 export default function UserInfo(props) {
-  const { title , user , setUseronLogin , setChecked , Checked } = props;
+  const { title , user , setUseronLogin , setChecked , IsUserLoggedIn   } = props;
 
   const NavigateUser = useNavigate();
 
+  useEffect(()=>{
+
+    if(IsUserLoggedIn === false){
+      NavigateUser("/login");
+    }
+  
+   } , [IsUserLoggedIn ,NavigateUser])
+  
   const HandelClick = async()=>{
     
     
@@ -60,7 +69,7 @@ export default function UserInfo(props) {
                      <label className="form-check-label"  htmlFor="SaveInfo">Save Info</label>
                       </div>
                       <button className="btn btn-primary" onClick={()=>{
-                        setUseronLogin(localStorage.removeItem("Logginuser"))
+                        setUseronLogin(localStorage.removeItem("Logginuser") || {})
                         NavigateUser("/login")
                       }}>LogOut</button>
                     </div>

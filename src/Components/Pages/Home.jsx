@@ -1,57 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Menu from "../Css/items/Menu";
 
-const AllCatogry = [...new Set( Menu.map((currentElement)=> currentElement.category)) , "All Electronic items"]
-
-
 export default function Home() {
   const [items, setItems] = useState(Menu);
-  const [CatItems , setCatitems] = useState(AllCatogry)
+  const [Price , setPrice] = useState(0)
+  const [filtered , updatefiltered] = useState([]) 
 
-  const filterItems = (categoryItems) => {
-    if(categoryItems === "All Electronic items"){
-      setItems(Menu)
-      return
-    }
-
-
-    const updatedValue = Menu.filter((currentElement) => {
-      return currentElement.category === categoryItems;
+  useEffect(()=>{
+    const filterItems = items.filter((item)=>{
+      if(item.price < Price) return false;
+      return true;
     });
-    setItems(updatedValue);
-  };
-
+    updatefiltered(filterItems)
+  },[Price , items])
+  
   return (
     <>
+    <div className="container">
+    <input type="text" className="form-control" value={Price} onChange={(event)=>{setPrice(event.target.value)}} />
+    <br />
+    <button className="btn btn-secondary" onClick={()=>{setPrice(Price)}}>Search</button>
+    
+    <button className="btn btn-primary"  onClick={()=>setPrice(0)}>Clear</button>
+    </div>
+    
+    <br />
       <h1 className="mx-5 text-center -text-bold main-headin">
         Electronic Items Order Now
       </h1>
       <hr />
-      <div className="menu-tabs comtainer">
-        <div className="menu-tab d-flex justify-content-around">
-         {
-          CatItems.map((currentElement)=>{
-            return <button
-              className="btn btn-warning"
-              onClick={() => {
-                filterItems(currentElement);
-              }}
-            >
-              {currentElement}
-            </button>
-          })
-         }
-         
-        </div>
-      </div>
       <div className="menu-items container-fluid mt-5 ">
         <div className="row">
           <div className="col-11 mx-auto">
-            <div className="row my-5">
-              {items.map((element) => {
+            <div className="row my-5" >
+              {filtered.map((element) => {
                 const { id, name, price, discription, image } = element;
                 return (
+                
                   <div
                     className="card mb-3"
                     style={{ maxWidth: "540px" }}
@@ -62,7 +48,8 @@ export default function Home() {
                         <img
                           src={image}
                           className="img-fluid rounded-start  hover-zoom"
-                          alt={id}
+                          alt={" Not Available"}
+                          
                         />
                       </div>
                       <div className="col-md-8">
@@ -79,6 +66,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
+                  
                 );
               })}
             </div>

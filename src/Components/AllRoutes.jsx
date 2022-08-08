@@ -1,41 +1,93 @@
-import React, { useState } from 'react';
-import {BrowserRouter as Router , Routes , Route} from "react-router-dom";
-import Footer from './Pages/Footer';
-import Home from './Pages/Home';
-import Login from './Pages/Login';
-import NavBar from './Pages/NavBar';
-import SignUp from './Pages/SignUp';
-import User from './Pages/User';
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route   } from "react-router-dom";
+import Footer from "./Pages/Footer";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";
+import NavBar from "./Pages/NavBar";
+import SignUp from "./Pages/SignUp";
+import User from "./Pages/User";
 
 export default function AllRoutes() {
-const [user , setUseronLogin] = useState(JSON.parse(localStorage.getItem("Logginuser")));
-const [Checked , setChecked] = useState(JSON.parse(localStorage.getItem("PreviousUser")));
- 
+  const [user, setUseronLogin] = useState({});
+  const [Checked, setChecked] = useState(JSON.parse(localStorage.getItem("PreviousUser")));
+  const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
+  
+
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const loggedInUser = JSON.parse(localStorage.getItem("Logginuser"));
+    if (loggedInUser && Object.keys(loggedInUser).length > 0) {
+      setUseronLogin(loggedInUser);
+      setIsUserLoggedIn(true);
+    }
+  }, []);
+
   return (
-   <>
-    <Router>
-      {
-       user && user.id ? <NavBar title="ApExCart" user={user} Checked={Checked} /> : <NavBar title="ApExCart" user={user} Checked={Checked} />  
-      }
+    <>
+      <Router>
+        <NavBar
+          title="ApExCart"
+          user={user}
+          IsUserLoggedIn={IsUserLoggedIn}
+        />
 
-    
-    
-    <Footer/>
-    <Routes>
-      <Route path='/' element={<Home/>}></Route>
-      <Route path='/signup' element={<SignUp />}></Route>
-      <Route path='login' element={<Login setUseronLogin={setUseronLogin} setChecked={setChecked}/>}></Route>
-      <Route path='/user' element={
-        user && user.id ? 
-       <User title="Information" user={user} setUseronLogin={setUseronLogin} setChecked={setChecked} Checked={Checked} /> : <Login setUseronLogin={setUseronLogin} setChecked={setChecked}/>
-        
-      }></Route>
-      
-    </Routes>
-    
-    </Router>
-
-
-   </>
-  )
+        <Footer />
+        <Routes>
+          
+            <Route exact path="/" element={ <Home IsUserLoggedIn={IsUserLoggedIn} setIsUserLoggedIn={setIsUserLoggedIn} user={user}/> }>
+            </Route>
+            
+            
+              
+          
+          <Route exact path="/signup" element={<SignUp />}></Route>
+          <Route
+            exact
+            path="login"
+            element={
+              <Login
+                setUseronLogin={setUseronLogin}
+                setChecked={setChecked}
+                IsUserLoggedIn={IsUserLoggedIn}
+                
+              />
+            }
+          ></Route>
+          
+            
+            <Route
+              exact
+              path="/user"
+              element={
+                IsUserLoggedIn ? 
+                <User
+                title="Information"
+                user={user}
+                setUseronLogin={setUseronLogin}
+                setChecked={setChecked}
+                Checked={Checked}
+                IsUserLoggedIn={IsUserLoggedIn}
+                setIsUserLoggedIn = {setIsUserLoggedIn}
+              /> 
+              : <Login
+              setUseronLogin={setUseronLogin}
+              setChecked={setChecked}
+              IsUserLoggedIn={IsUserLoggedIn}
+              
+            />
+              }
+            ></Route> 
+          
+        </Routes>
+      </Router>
+    </>
+  );
 }

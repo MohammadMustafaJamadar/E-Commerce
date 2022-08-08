@@ -5,7 +5,10 @@ import InputChanger from "../utils/general";
 import { PassWordvalidate } from "../utils/Validation";
 
 export default function LoginForm(props) {
-  const { setUseronLogin, setChecked } = props;
+  const { setChecked , setUseronLogin  } = props;
+
+  
+
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -46,8 +49,8 @@ export default function LoginForm(props) {
     );
 
     if (result) {
+      setUseronLogin(result);
       localStorage.setItem("Logginuser", JSON.stringify(result));
-      setUseronLogin(JSON.parse(localStorage.getItem("Logginuser")));
       navigatetoUser("/user");
     } else {
       setValidationError("User not found");
