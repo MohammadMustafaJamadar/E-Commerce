@@ -1,22 +1,48 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import Menu from "../Css/items/Menu";
+import axios from 'axios'
+
+async function DataFetch(){
+return await  axios.post("http://localhost:9000/home")
+}
+
+async function updateHomePageFetch(setProducts , setErrorMassage){
+  try {
+    const res = await DataFetch();
+    const products = res.data.product
+    setProducts(products);
+
+    
+  } catch (error) {
+    setErrorMassage("Fetch error")
+    console.log(error);
+  }
+}
 
 export default function Home() {
-  const [items, setItems] = useState(Menu);
+
+  const [Products, setProducts] = useState([]);
   const [Price , setPrice] = useState(0)
   const [filtered , updatefiltered] = useState([]) 
+  const [errorMassage , setErrorMassage] = useState("")
+  
+  useEffect(()=>{
+   
+    updateHomePageFetch(setProducts , setErrorMassage)
+  },[])
+
 
   useEffect(()=>{
-    const filterItems = items.filter((item)=>{
+    const filterItems = Products.filter((item)=>{
       if(item.price < Price) return false;
       return true;
     });
     updatefiltered(filterItems)
-  },[Price , items])
+  },[Price , Products])
   
   return (
     <>
+    
     <div className="container">
     <input type="text" className="form-control" value={Price} onChange={(event)=>{setPrice(event.target.value)}} />
     <br />
@@ -30,6 +56,9 @@ export default function Home() {
         Electronic Items Order Now
       </h1>
       <hr />
+    <h1>
+    {errorMassage}
+      </h1>  
       <div className="menu-items container-fluid mt-5 ">
         <div className="row">
           <div className="col-11 mx-auto">
