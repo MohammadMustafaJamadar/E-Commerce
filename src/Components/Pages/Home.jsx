@@ -1,35 +1,55 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from 'axios'
+import { useDispatch , useSelector } from "react-redux";
 
 async function DataFetch(){
 return await  axios.post("http://localhost:9000/home")
 }
 
-async function updateHomePageFetch(setProducts , setErrorMassage){
-  try {
-    const res = await DataFetch();
-    const products = res.data.product
-    setProducts(products);
+// async function updateHomePageFetch(setProducts , setErrorMassage){
+//   try {
+//     const res = await DataFetch();
+//     const products = res.data.product
+//     setProducts(products);
 
     
-  } catch (error) {
-    setErrorMassage("Fetch error")
-    console.log(error);
-  }
+//   } catch (error) {
+//     setErrorMassage("Fetch error")
+//     console.log(error);
+//   }
+// }
+
+const FetchingProducts = (state)=>{
+  console.log(state);
+  return state.products
 }
 
 export default function Home() {
 
-  const [Products, setProducts] = useState([]);
+  const Products = useSelector(FetchingProducts);
+  const dispatch = useDispatch()
   const [Price , setPrice] = useState(0)
   const [filtered , updatefiltered] = useState([]) 
   const [errorMassage , setErrorMassage] = useState("")
   
   useEffect(()=>{
-   
-    updateHomePageFetch(setProducts , setErrorMassage)
-  },[])
+    DataFetch().then((res)=>{
+      const products = res.data.product
+      dispatch({
+        type:"fetch_data",
+        payload: {products}
+      })
+      
+    }).catch((err)=>{
+      if(err){
+        setErrorMassage("Data Not fetching")
+        throw err;
+      }
+    })
+    // updateHomePageFetch(setProducts , setErrorMassage)
+
+  },[dispatch])
 
 
   useEffect(()=>{
