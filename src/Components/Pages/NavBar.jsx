@@ -56,6 +56,21 @@ export default function NavBar(props) {
                 }
 
               </li>
+              <li className="nav-item">
+                
+                  <Link className="nav-link " to="/addtocart">
+                    Add to cart
+                  </Link>
+               
+              </li>
+
+              <li className="nav-item">
+                
+                <Link className="nav-link " to="/addproducts">
+                  Add Products
+                </Link>
+             
+            </li>
 
                 
             </ul>

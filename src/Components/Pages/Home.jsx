@@ -21,7 +21,6 @@ return await  axios.post("http://localhost:9000/home")
 // }
 
 const FetchingProducts = (state)=>{
-  console.log(state);
   return state.products
 }
 
@@ -59,6 +58,8 @@ export default function Home() {
     });
     updatefiltered(filterItems)
   },[Price , Products])
+
+
   
   return (
     <>
@@ -84,13 +85,13 @@ export default function Home() {
           <div className="col-11 mx-auto">
             <div className="row my-5" >
               {filtered.map((element) => {
-                const { id, name, price, discription, image } = element;
+                const { _id, name, price, discription, image } = element;
                 return (
                 
                   <div
                     className="card mb-3"
                     style={{ maxWidth: "540px" }}
-                    key={id}
+                    key={_id}
                   >
                     <div className="row g-0">
                       <div className="col-md-4 ">
@@ -108,8 +109,16 @@ export default function Home() {
                           <p className="card-text price">Price: {price} </p>
                         </div>
                       </div>
-                      <div className="text-center mt-2px">
-                        <button className="btn btn-outline-primary btn-sm ">
+                      <div className="text-center mt-2px" >
+                        <button className="btn btn-outline-primary btn-sm " onClick={()=>{
+                          const handelCart = (element)=>{
+                            dispatch({
+                              type:"Adding_Cart",
+                              payload:{element}
+                            })
+                          }
+                          handelCart(element);
+                        }}>
                           Add To Cart
                         </button>
                       </div>
