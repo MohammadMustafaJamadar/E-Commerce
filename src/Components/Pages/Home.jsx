@@ -21,16 +21,21 @@ return await  axios.post("http://localhost:9000/home")
 // }
 
 const FetchingProducts = (state)=>{
-  return state.products
+  return {
+    Products : state.products,
+  }
 }
 
 export default function Home() {
 
-  const Products = useSelector(FetchingProducts);
+  const {Products} = useSelector(FetchingProducts);
   const dispatch = useDispatch()
-  const [Price , setPrice] = useState(0)
+  const [price , setPrice] = useState(0)
   const [filtered , updatefiltered] = useState([]) 
-  const [errorMassage , setErrorMassage] = useState("")
+  const [errorMassage , setErrorMassage] = useState("");
+
+  let cartItemLocal = JSON.parse(localStorage.getItem("forAddtoCart"));
+  cartItemLocal = cartItemLocal === null ? [] : cartItemLocal
   
   useEffect(()=>{
     DataFetch().then((res)=>{
@@ -53,11 +58,11 @@ export default function Home() {
 
   useEffect(()=>{
     const filterItems = Products.filter((item)=>{
-      if(item.price < Price) return false;
+      if(item.price < price) return false;
       return true;
     });
     updatefiltered(filterItems)
-  },[Price , Products])
+  },[price , Products])
 
 
   
@@ -65,9 +70,9 @@ export default function Home() {
     <>
     
     <div className="container">
-    <input type="text" className="form-control" value={Price} onChange={(event)=>{setPrice(event.target.value)}} />
+    <input type="text" className="form-control" value={price} onChange={(event)=>{setPrice(event.target.value)}} />
     <br />
-    <button className="btn btn-secondary" onClick={()=>{setPrice(Price)}}>Search</button>
+    <button className="btn btn-secondary" onClick={()=>{setPrice(price)}}>Search</button>
     
     <button className="btn btn-primary"  onClick={()=>setPrice(0)}>Clear</button>
     </div>
@@ -116,6 +121,9 @@ export default function Home() {
                               type:"Adding_Cart",
                               payload:{element}
                             })
+
+                            localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))
+
                           }
                           handelCart(element);
                         }}>
