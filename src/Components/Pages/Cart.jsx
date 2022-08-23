@@ -48,7 +48,7 @@ export default function Cart() {
         <div>Cart is empty</div>
       ) : (
         newCart.map((ele) => {
-          const { _id, name, price, discription, image, qyt } = ele;
+          const { _id, name, price, discription, image, qty } = ele;
 
           return (
             <>
@@ -80,7 +80,7 @@ export default function Cart() {
                               <p className="lead fw-normal mb-2">{name}</p>
                               <p>
                                 <span className="text-muted">Price </span>
-                                { price * qyt}
+                                { price * qty}
                               </p>
                             </div>
                             <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -89,7 +89,7 @@ export default function Cart() {
                                 onClick={() => {
                                     const updatedArr = updateQty.map((element) => {
                                       if (element._id === ele._id) {
-                                        element.qyt -= 1;
+                                        element.qty -= 1;
                                       }
                                       return element;
                                     })
@@ -102,7 +102,7 @@ export default function Cart() {
                               <input
                                 type="text"
                                 className="form-control"
-                                value={qyt}
+                                value={qty}
                                 onChange={countUpdate}
                               />
                               <button
@@ -110,8 +110,8 @@ export default function Cart() {
                                 onClick={() => {
                                   const updatedArr = updateQty.map((element) => {
                                     if (element._id === ele._id) {
-                                      element.qyt += 1;
-                                      // console.log(element);
+                                      element.qty += 1;
+                      
                                     }
                                     return element;
                                   })
