@@ -29,12 +29,6 @@ const store = configureStore({
           ...state,
           addingCart:[...state.addingCart , payload.element]
         };
-
-        // case "Adding_To_Cart":
-        // return {
-        //   ...state,
-        //   addingCart: payload.cartItem
-        // };
     }
     return Initial_State;
   },

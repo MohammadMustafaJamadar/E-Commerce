@@ -10,12 +10,13 @@ import NavBar from "./Pages/NavBar";
 import SignUp from "./Pages/SignUp";
 import User from "./Pages/User";
 
-export default function AllRoutes() {
+export default function AllRoutes(props) {
   const [user, setUseronLogin] = useState({});
   const [Checked, setChecked] = useState(
     JSON.parse(localStorage.getItem("PreviousUser"))
   );
   const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
+  
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -49,6 +50,8 @@ export default function AllRoutes() {
                 IsUserLoggedIn={IsUserLoggedIn}
                 setIsUserLoggedIn={setIsUserLoggedIn}
                 user={user}
+                {...props}
+                
               />
             }
           ></Route>

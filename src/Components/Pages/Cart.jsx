@@ -14,29 +14,12 @@ export default function Cart() {
   // const cartItem = JSON.parse(localStorage.getItem("forAddtoCart"));
   const {newCart} = useSelector(AddingCart)
   const [updateQty, setUpdateQty] = useState([]);
+  
 
 
   useEffect(()=>{
     setUpdateQty(newCart);
   },[newCart])
-
-  // useEffect(()=>{
-  //   try {
-
-  //     if(cartItem){
-  //       dispatch({
-  //         type:"Adding_To_Cart",
-  //         payload:{cartItem}
-  //       })
-  //     }
-      
-  //   } catch (error) {
-  //     throw error
-  //   }
-    
-  //   setIncreaseQyt(cartItem)
-
-  // },[dispatch])
   
   const countUpdate = (event) => {
     InputChanger(event);
@@ -89,6 +72,7 @@ export default function Cart() {
                                 onClick={() => {
                                     const updatedArr = updateQty.map((element) => {
                                       if (element._id === ele._id) {
+                                        if(element.qty === 0) element.qty = 1
                                         element.qty -= 1;
                                       }
                                       return element;
@@ -110,6 +94,7 @@ export default function Cart() {
                                 onClick={() => {
                                   const updatedArr = updateQty.map((element) => {
                                     if (element._id === ele._id) {
+                                      if(element.qty === 0) element.qty = 1
                                       element.qty += 1;
                       
                                     }

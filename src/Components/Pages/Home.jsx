@@ -1,11 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import axios from 'axios'
 import { useDispatch , useSelector } from "react-redux";
 
-async function DataFetch(){
-return await  axios.post("http://localhost:9000/home")
-}
 
 // async function updateHomePageFetch(setProducts , setErrorMassage){
 //   try {
@@ -26,36 +22,17 @@ const FetchingProducts = (state)=>{
   }
 }
 
-export default function Home() {
+export default function Home(props) {
 
   const {Products} = useSelector(FetchingProducts);
   const dispatch = useDispatch()
   const [price , setPrice] = useState(0)
   const [filtered , updatefiltered] = useState([]) 
-  const [errorMassage , setErrorMassage] = useState("");
+  const {errorMassage} = props
 
-  let cartItemLocal = JSON.parse(localStorage.getItem("forAddtoCart"));
-  cartItemLocal = cartItemLocal === null ? [] : cartItemLocal
+  // let cartItemLocal = JSON.parse(localStorage.getItem("forAddtoCart"));
+  // cartItemLocal = cartItemLocal === null ? [] : cartItemLocal
   
-  useEffect(()=>{
-    DataFetch().then((res)=>{
-      const products = res.data.product
-      dispatch({
-        type:"fetch_data",
-        payload: {products}
-      })
-      
-    }).catch((err)=>{
-      if(err){
-        setErrorMassage("Data Not fetching")
-        throw err;
-      }
-    })
-    // updateHomePageFetch(setProducts , setErrorMassage)
-
-  },[dispatch])
-
-
   useEffect(()=>{
     const filterItems = Products.filter((item)=>{
       if(item.price < price) return false;
@@ -122,7 +99,7 @@ export default function Home() {
                               payload:{element}
                             })
 
-                            localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))
+                            // localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))
 
                           }
                           handelCart(element);

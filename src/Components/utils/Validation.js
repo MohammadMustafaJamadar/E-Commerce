@@ -27,9 +27,10 @@ if(name.length < 3){
 };
 
 function EmailValidate (email) {
-  const Userlist = JSON.parse(localStorage.getItem("NewData"))
-  const result = Userlist.find((user)=> user.email === email)
-  if(result){
+  let Userlist = JSON.parse(localStorage.getItem("NewData"))
+  Userlist = Userlist === null ? [] : Userlist
+
+  if(Userlist.find((user)=> user.email === email)){
     return{
       massage : "Email already exists" ,
       result: false
