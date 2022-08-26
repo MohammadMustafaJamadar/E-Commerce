@@ -24,10 +24,10 @@ const FetchingProducts = (state)=>{
 
 export default function Home(props) {
 
-  const {Products} = useSelector(FetchingProducts);
+  let {Products} = useSelector(FetchingProducts);
   const dispatch = useDispatch()
   const [price , setPrice] = useState(0)
-  const [filtered , updatefiltered] = useState([]) 
+  let [filtered , updatefiltered] = useState([]) 
   const {errorMassage} = props
 
   // let cartItemLocal = JSON.parse(localStorage.getItem("forAddtoCart"));
@@ -93,10 +93,10 @@ export default function Home(props) {
                       </div>
                       <div className="text-center mt-2px" >
                         <button className="btn btn-outline-primary btn-sm " onClick={()=>{
-                          const handelCart = (element)=>{
+                          let handelCart = (element)=>{
                             dispatch({
-                              type:"Adding_Cart",
-                              payload:{element}
+                              type:"Add _in_Cart",
+                              payload:{ productId: element._id , quantity : element.qty }
                             })
 
                             // localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))

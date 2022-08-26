@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-const Initial_State = {
-  products: [],
-  addingCart:[],
+let Initial_State = {
+  products : [],
+  cart : {},
+  quantity : 1
 };
 
-const store = configureStore({
+let store = configureStore({
   reducer: (state, action) => {
     const { type, payload } = action;
     
@@ -24,11 +25,22 @@ const store = configureStore({
           products: [...state.products, payload.NewProducts],
         };
 
-        case "Adding_Cart":
+        case "Add _in_Cart":
+          const {productId , quantity} = payload
         return {
           ...state,
-          addingCart:[...state.addingCart , payload.element]
+          cart:{...state.cart , [productId] : quantity } 
         };
+
+        // case "update_Qty":
+        // let { productQty } = payload
+        // console.log(productQty += 1)
+        // return {
+        //   ...state,
+        //   quantity : productQty += 1 
+          
+        // };
+
     }
     return Initial_State;
   },

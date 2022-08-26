@@ -59,7 +59,7 @@ export default function NavBar(props) {
               <li className="nav-item">
                 
                   <Link className="nav-link " to="/addtocart">
-                    Add to cart
+                    Cart
                   </Link>
                
               </li>

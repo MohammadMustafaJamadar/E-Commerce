@@ -1,25 +1,34 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState , useEffect } from "react";
+import { useSelector , useDispatch } from "react-redux";
 import InputChanger from "../utils/general";
 
 const AddingCart = (state) => {
   return {
-    newCart : state.addingCart,
+    newCart : state.cart,
+    products : state.products,
   };
 };
 
 export default function Cart() {
   // const cartItem = JSON.parse(localStorage.getItem("forAddtoCart"));
-  const {newCart} = useSelector(AddingCart)
-  const [updateQty, setUpdateQty] = useState([]);
+  let { newCart , products  } = useSelector(AddingCart)
+  let [cartProducts, updateCartProducts] = useState([]);
+  const dispatch = useDispatch();
   
-
-
   useEffect(()=>{
-    setUpdateQty(newCart);
-  },[newCart])
+    
+    let filtereProducts = products.filter((product)=>{
+  
+      if(newCart[product._id]){
+        return true
+      }
+      return false
+    })
+
+    updateCartProducts(filtereProducts);
+
+  },[products , newCart ])
   
   const countUpdate = (event) => {
     InputChanger(event);
@@ -27,10 +36,10 @@ export default function Cart() {
 
   return (
     <>
-      {newCart.length === 0 ? (
+      {cartProducts.length === 0 ? (
         <div>Cart is empty</div>
       ) : (
-        newCart.map((ele) => {
+        cartProducts.map((ele) => {
           const { _id, name, price, discription, image, qty } = ele;
 
           return (
@@ -70,14 +79,14 @@ export default function Cart() {
                               <button
                                 className="btn btn-secondary"
                                 onClick={() => {
-                                    const updatedArr = updateQty.map((element) => {
+                                    const updatedArr = cartProducts.map((element) => {
                                       if (element._id === ele._id) {
                                         if(element.qty === 0) element.qty = 1
                                         element.qty -= 1;
                                       }
                                       return element;
                                     })
-                                    setUpdateQty(updatedArr);
+                                    updateCartProducts(updatedArr);
                                   
                                 }}
                               >
@@ -92,15 +101,26 @@ export default function Cart() {
                               <button
                                 className="btn btn-secondary"
                                 onClick={() => {
-                                  const updatedArr = updateQty.map((element) => {
+
+                                  let updatedArr = cartProducts.map((element) => {
                                     if (element._id === ele._id) {
-                                      if(element.qty === 0) element.qty = 1
+
+                                      
                                       element.qty += 1;
                       
                                     }
                                     return element;
                                   })
-                                  setUpdateQty(updatedArr);
+                                  updateCartProducts(updatedArr);
+
+                                // const  handelQtyUpdate = (product)=>{
+                                //   dispatch({
+                                //     type:"update_Qty",
+                                //     payload:{productQty : product.qty }
+                                //   })
+                                // }
+                                // handelQtyUpdate(ele)
+
                                 
                               }}
                               >
@@ -122,7 +142,7 @@ export default function Cart() {
           );
         })
       )}
-      {newCart.length === 0 ? (
+      {cartProducts.length === 0 ? (
         <div></div>
       ) : (
         <center>
