@@ -58,7 +58,7 @@ export default function NavBar(props) {
               </li>
               <li className="nav-item">
                 
-                  <Link className="nav-link " to="/addtocart">
+                  <Link className="nav-link " to="/cart">
                     Cart
                   </Link>
                
@@ -71,6 +71,14 @@ export default function NavBar(props) {
                 </Link>
              
             </li>
+
+            {/* <li className="nav-item">
+                
+                <Link className="nav-link " to="/checkout">
+                  Checkout
+                </Link>
+             
+            </li> */}
 
                 
             </ul>

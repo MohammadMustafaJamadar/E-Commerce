@@ -2,20 +2,6 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch , useSelector } from "react-redux";
 
-
-// async function updateHomePageFetch(setProducts , setErrorMassage){
-//   try {
-//     const res = await DataFetch();
-//     const products = res.data.product
-//     setProducts(products);
-
-    
-//   } catch (error) {
-//     setErrorMassage("Fetch error")
-//     console.log(error);
-//   }
-// }
-
 const FetchingProducts = (state)=>{
   return {
     Products : state.products,
@@ -96,7 +82,7 @@ export default function Home(props) {
                           let handelCart = (element)=>{
                             dispatch({
                               type:"Add _in_Cart",
-                              payload:{ productId: element._id , quantity : element.qty }
+                              payload:{ element }
                             })
 
                             // localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))

@@ -1,9 +1,10 @@
 import axios from 'axios'
 import {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddProducts from "./Components/Pages/AddProducts";
 import Cart from "./Components/Pages/Cart";
+import Checkout from './Components/Pages/Checkout';
 import Footer from "./Components/Pages/Footer";
 import Home from "./Components/Pages/Home";
 import Login from "./Components/Pages/Login";
@@ -17,6 +18,11 @@ async function DataFetch(){
   return await  axios.post("http://localhost:9000/home")
   }
   
+  const selctorFroStore = (state)=>{
+    return {
+      addCart : state.cart
+    }
+  }
 
 function App(props) {
   const dispatch = useDispatch();
@@ -26,7 +32,9 @@ function App(props) {
     JSON.parse(localStorage.getItem("PreviousUser"))
   );
   const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
+  const {addCart} = useSelector(selctorFroStore)
   
+  console.log(addCart)
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -119,8 +127,13 @@ function App(props) {
             }
           ></Route>
 
-          <Route exact path="/addtocart" element={<Cart />}></Route>
+          <Route exact path="/cart" element={<Cart />}></Route>
           <Route exact path="/addproducts" element={<AddProducts />}></Route>
+      
+          <Route exact path="/checkout" element={
+          addCart.length === 0 ?
+           (<Cart/>) : (<Checkout/>)}></Route>
+
         </Routes>
       </Router>
 

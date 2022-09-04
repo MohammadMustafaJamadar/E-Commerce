@@ -2,8 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 let Initial_State = {
   products : [],
-  cart : {},
-  quantity : 1
+  cart : [],
 };
 
 let store = configureStore({
@@ -26,20 +25,24 @@ let store = configureStore({
         };
 
         case "Add _in_Cart":
-          const {productId , quantity} = payload
         return {
           ...state,
-          cart:{...state.cart , [productId] : quantity } 
+          cart : [...state.cart , payload.element] 
         };
 
-        // case "update_Qty":
-        // let { productQty } = payload
-        // console.log(productQty += 1)
-        // return {
-        //   ...state,
-        //   quantity : productQty += 1 
-          
-        // };
+        case "updateProduct":
+        
+        return {
+          ...state,
+          cart : payload.updateArr
+        };
+
+        case "remove_item":
+        
+        return {
+          ...state,
+          cart : payload.removeItem
+        };
 
     }
     return Initial_State;
