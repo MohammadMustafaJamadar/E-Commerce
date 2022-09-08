@@ -1,10 +1,10 @@
-import axios from 'axios'
-import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux'
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddProducts from "./Components/Pages/AddProducts";
 import Cart from "./Components/Pages/Cart";
-import Checkout from './Components/Pages/Checkout';
+import Checkout from "./Components/Pages/Checkout";
 import Footer from "./Components/Pages/Footer";
 import Home from "./Components/Pages/Home";
 import Login from "./Components/Pages/Login";
@@ -12,29 +12,24 @@ import NavBar from "./Components/Pages/NavBar";
 import SignUp from "./Components/Pages/SignUp";
 import User from "./Components/Pages/User";
 
+async function DataFetch() {
+  return await axios.post("http://localhost:9000/home");
+}
 
+const selctorForStore = (state) => {
+  return {
+    addCart: state.cart,
+  };
+};
 
-async function DataFetch(){
-  return await  axios.post("http://localhost:9000/home")
-  }
-  
-  const selctorFroStore = (state)=>{
-    return {
-      addCart : state.cart
-    }
-  }
-
-function App(props) {
+function App() {
   const dispatch = useDispatch();
-  const [errorMassage , setErrorMassage] = useState()
+  const [errorMassage, setErrorMassage] = useState();
   const [user, setUseronLogin] = useState({});
-  const [Checked, setChecked] = useState(
-    JSON.parse(localStorage.getItem("PreviousUser"))
-  );
   const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
-  const {addCart} = useSelector(selctorFroStore)
-  
-  console.log(addCart)
+  const { addCart } = useSelector(selctorForStore);
+
+  console.log(user)
 
   useEffect(() => {
     if (Object.keys(user).length > 0) {
@@ -45,35 +40,27 @@ function App(props) {
   }, [user]);
 
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem("Logginuser"));
-    if (loggedInUser && Object.keys(loggedInUser).length > 0) {
-      setUseronLogin(loggedInUser);
-      setIsUserLoggedIn(true);
-    }
-  }, []);
-
-  useEffect(()=>{
-    DataFetch().then((res)=>{
-      const products = res.data.product
-      dispatch({
-        type:"fetch_data",
-        payload: {products}
+    DataFetch()
+      .then((res) => {
+        const products = res.data.product;
+        dispatch({
+          type: "fetch_data",
+          payload: { products },
+        });
       })
-      
-    }).catch((err)=>{
-      if(err){
-        setErrorMassage("Data Not fetching")
-        throw err;
-      }
-    })
-  },[dispatch])
+      .catch((err) => {
+        if (err) {
+          setErrorMassage("Data Not fetching");
+          throw err;
+        }
+      });
+  }, [dispatch]);
 
   return (
     <>
-    <Router>
+      <Router>
         <NavBar title="ApExCart" user={user} IsUserLoggedIn={IsUserLoggedIn} />
-        
-        
+
         <Footer />
         <Routes>
           <Route
@@ -85,7 +72,6 @@ function App(props) {
                 setIsUserLoggedIn={setIsUserLoggedIn}
                 user={user}
                 errorMassage={errorMassage}
-                
               />
             }
           ></Route>
@@ -97,7 +83,6 @@ function App(props) {
             element={
               <Login
                 setUseronLogin={setUseronLogin}
-                setChecked={setChecked}
                 IsUserLoggedIn={IsUserLoggedIn}
               />
             }
@@ -112,31 +97,32 @@ function App(props) {
                   title="Information"
                   user={user}
                   setUseronLogin={setUseronLogin}
-                  setChecked={setChecked}
-                  Checked={Checked}
                   IsUserLoggedIn={IsUserLoggedIn}
                   setIsUserLoggedIn={setIsUserLoggedIn}
                 />
               ) : (
                 <Login
                   setUseronLogin={setUseronLogin}
-                  setChecked={setChecked}
                   IsUserLoggedIn={IsUserLoggedIn}
                 />
               )
             }
           ></Route>
 
-          <Route exact path="/cart" element={<Cart />}></Route>
+          <Route
+            exact
+            path="/cart"
+            element={IsUserLoggedIn === true ? <Cart /> : <Login />}
+          ></Route>
           <Route exact path="/addproducts" element={<AddProducts />}></Route>
-      
-          <Route exact path="/checkout" element={
-          addCart.length === 0 ?
-           (<Cart/>) : (<Checkout/>)}></Route>
 
+          <Route
+            exact
+            path="/checkout"
+            element={addCart.length === 0 ? <Cart /> : <Checkout />}
+          ></Route>
         </Routes>
       </Router>
-
     </>
   );
 }

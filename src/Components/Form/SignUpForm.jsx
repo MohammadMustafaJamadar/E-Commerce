@@ -1,8 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import InputChanger  from '../utils/general'
-import {PassWordvalidate , NameValidate , EmailValidate} from "../utils/Validation"
+import InputChanger from "../utils/general";
+import { PassWordvalidate, NameValidate } from "../utils/Validation";
+import axios from "axios";
 
 export default function SignUpForm() {
   const [name, setName] = useState("");
@@ -10,51 +11,54 @@ export default function SignUpForm() {
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmPass] = useState("");
   const navigatetoUser = useNavigate();
-  const [ValidationError , setValidationError] = useState(null);
+  const [ValidationError, setValidationError] = useState(null);
 
   const NameChanger = (event) => {
-   InputChanger(event ,setName );
+    InputChanger(event, setName);
   };
   const EmailChanger = (event) => {
-   InputChanger(event ,setEmail );
-   
-
+    InputChanger(event, setEmail);
   };
   const PasswordChanger = (event) => {
-   InputChanger(event , setPassword );
-    
+    InputChanger(event, setPassword);
   };
   const ConfirmPassChanger = (event) => {
-    InputChanger(event , setConfirmPass)
+    InputChanger(event, setConfirmPass);
   };
 
   const handelsubmit = async (event) => {
     event.preventDefault();
-    const ValidationResultForPass = PassWordvalidate(password)  
-    const ValidationResultForName = NameValidate(name)
-    const ValidationResultForEmail = EmailValidate(email)
 
-    if(ValidationResultForPass.result === false){
-      setValidationError(ValidationResultForPass.massage)
+    const ValidationResultForName = NameValidate(name);
+    const ValidationResultForPass = PassWordvalidate(password);
+
+    if (ValidationResultForName.result === false) {
+      setValidationError(ValidationResultForName.massage);
       return;
-    }else if(ValidationResultForName.result === false){
-      setValidationError(ValidationResultForName.massage)
-      return;
-    }else if(ValidationResultForEmail.result === false){
-      setValidationError(ValidationResultForEmail.massage);
+    } else if (ValidationResultForPass.result === false) {
+      setValidationError(ValidationResultForPass.massage);
       return;
     }
+    {
+      const id = new Date().getTime().toString();
+      const newrecords = { name, email, password, confirmpass, id };
 
-    const id = new Date().getTime().toString();
-    const newrecords ={ name, email, password, confirmpass, id };
-    
-    let userlist = await JSON.parse(localStorage.getItem("NewData")) ;
-    userlist = userlist === null ? [] : userlist;
-    
-    
-    if(newrecords.password === newrecords.confirmpass){
-      await localStorage.setItem("NewData" , JSON.stringify([...userlist , newrecords]));
-      navigatetoUser("/login")
+      if (newrecords.password === newrecords.confirmpass) {
+        axios
+          .post("http://localhost:9000/signup", newrecords)
+          .then((res) => {
+            setValidationError(res.data.massage)
+            if (res.data.newUserInfo === undefined) {
+            } else {
+              navigatetoUser("/login");
+            }
+          })
+          .catch((err) => {
+            throw err;
+          });
+      } else {
+        setValidationError("Invalid  input");
+      }
     }
   };
 
@@ -118,10 +122,7 @@ export default function SignUpForm() {
               onChange={ConfirmPassChanger}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-primary"
-          >
+          <button type="submit" className="btn btn-primary">
             Submit
           </button>
         </div>

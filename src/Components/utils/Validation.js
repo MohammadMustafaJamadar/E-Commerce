@@ -1,3 +1,4 @@
+
 function PassWordvalidate (pass) {
  if(pass.length < 4){
   return{
@@ -26,21 +27,5 @@ if(name.length < 3){
 }
 };
 
-function EmailValidate (email) {
-  let Userlist = JSON.parse(localStorage.getItem("NewData"))
-  Userlist = Userlist === null ? [] : Userlist
 
-  if(Userlist.find((user)=> user.email === email)){
-    return{
-      massage : "Email already exists" ,
-      result: false
-    }
-  }else{
-    return{
-      massage : "Successfull" , 
-      result: true
-    }
-  }
-}
-
-export {PassWordvalidate , NameValidate , EmailValidate}
+export {PassWordvalidate , NameValidate }

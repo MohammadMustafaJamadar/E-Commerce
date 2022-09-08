@@ -3,19 +3,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputChanger from "../utils/general";
 import { PassWordvalidate } from "../utils/Validation";
+import axios from "axios";
 
 export default function LoginForm(props) {
-  const { setChecked , setUseronLogin  } = props;
-
-  
-
-
+  const {  setUseronLogin } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ValidationError, setValidationError] = useState(null);
   const navigatetoUser = useNavigate();
-
-  const PreviousUser = JSON.parse(localStorage.getItem("PreviousUser"));
 
   const EmailChnager = (event) => {
     InputChanger(event, setEmail);
@@ -24,36 +19,26 @@ export default function LoginForm(props) {
     InputChanger(event, setPassword);
   };
 
-  const PreviousUserLogin = async () => {
-    setEmail(PreviousUser.email);
-    setPassword(PreviousUser.password);
-    navigatetoUser("/user");
-  };
-
-  const PreviousUserLoginRemove = () => {
-    setChecked(localStorage.removeItem("PreviousUser"));
-  };
-
-  const handelsubmit = async (event) => {
+  const handelsubmit = (event) => {
     event.preventDefault();
 
     const ValidationResult = PassWordvalidate(password);
     if (ValidationResult.result === false) {
       setValidationError(ValidationResult.massage);
       return;
-    }
-
-    const userlist = await JSON.parse(localStorage.getItem("NewData"));
-    const result = await userlist.find(
-      (user) => user.email === email && user.password === password
-    );
-
-    if (result) {
-      setUseronLogin(result);
-      localStorage.setItem("Logginuser", JSON.stringify(result));
-      navigatetoUser("/user");
     } else {
-      setValidationError("User not found");
+      const userLoginDetail = { email, password };
+      axios.post("http://localhost:9000/login", userLoginDetail).then((res) => {
+        setValidationError(res.data.massage);
+        const userData = res.data.dataOfUser;
+
+        if (userData === undefined) {
+          setValidationError(res.data.massage);
+        } else {
+          setUseronLogin(userData);
+          navigatetoUser('/user')
+        }
+      });
     }
   };
 
@@ -96,22 +81,7 @@ export default function LoginForm(props) {
           </div>
           <button type="submit" className="btn btn-primary">
             Submit
-          </button>{" "}
-          &nbsp;
-          {PreviousUser && PreviousUser.id ? (
-            <button className="btn btn-primary" onClick={PreviousUserLogin}>
-              {PreviousUser.name}
-            </button>
-          ) : null}
-          <br /> <br />
-          {PreviousUser && PreviousUser.id ? (
-            <button
-              className="btn btn-primary"
-              onClick={PreviousUserLoginRemove}
-            >
-              {PreviousUser.name} Remove
-            </button>
-          ) : null}
+          </button>
         </div>
       </form>
     </>

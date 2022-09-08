@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../Css/Profile.css'
 
 export default function UserInfo(props) {
-  const { title , user , setUseronLogin , setChecked , IsUserLoggedIn   } = props;
+  const { title , user , setUseronLogin ,  IsUserLoggedIn   } = props;
 
   const NavigateUser = useNavigate();
 
@@ -13,18 +13,8 @@ export default function UserInfo(props) {
       NavigateUser("/login");
     }
   
-   } , [IsUserLoggedIn ,NavigateUser])
+   } , [IsUserLoggedIn, NavigateUser])
   
-  const HandelClick = async()=>{
-    
-    
-   await setChecked((localStorage.setItem("PreviousUser" , JSON.stringify( user))));
-    
-    
-  }
-
-  
-
   return (
     <>
     
@@ -65,11 +55,9 @@ export default function UserInfo(props) {
                         </div>
                       </div>
                       <div className='mb-3 for-check'>
-                      <input type="checkbox"  onClick={HandelClick} className="form-check-input" id="SaveInfo"/>
-                     <label className="form-check-label"  htmlFor="SaveInfo">Save Info</label>
                       </div>
                       <button className="btn btn-primary" onClick={()=>{
-                        setUseronLogin(localStorage.removeItem("Logginuser") || {})
+                        setUseronLogin({})
                         NavigateUser("/login")
                       }}>LogOut</button>
                     </div>

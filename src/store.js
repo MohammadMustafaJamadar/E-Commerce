@@ -11,7 +11,6 @@ let store = configureStore({
     
 
     switch (type) {
-
       case "fetch_data":
         return {
           ...state,

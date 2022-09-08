@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch , useSelector } from "react-redux";
+import axios from 'axios'
 
 const FetchingProducts = (state)=>{
   return {
@@ -80,6 +81,7 @@ export default function Home(props) {
                       <div className="text-center mt-2px" >
                         <button className="btn btn-outline-primary btn-sm " onClick={()=>{
                           let handelCart = (element)=>{
+                            axios.post("http://localhost:9000/cart" , element)
                             dispatch({
                               type:"Add _in_Cart",
                               payload:{ element }
