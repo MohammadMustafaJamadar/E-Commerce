@@ -1,5 +1,6 @@
 {
   "name": "my-newproject",
+  "proxy": "http://localhost:9000",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -19,6 +20,7 @@
     "react-scripts": "5.0.1",
     "react-use-cart": "^1.13.0",
     "redux": "^4.2.0",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

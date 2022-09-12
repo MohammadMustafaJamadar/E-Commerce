@@ -1,20 +1,43 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../Css/Profile.css'
+import axios from 'axios';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+axios.defaults.withCredentials = true
+
+async function fetchDataOfuserFromBackEnd(){
+  try {
+   return await axios.get('http://localhost:9000/user',  { withCredentials: true });
+  } catch (error) {
+    throw error;
+  }
+  
+} 
+
 
 export default function UserInfo(props) {
-  const { title , user , setUseronLogin ,  IsUserLoggedIn   } = props;
-
+  const { title,  } = props;
   const NavigateUser = useNavigate();
-
+  const [user , setUser] = useState({})
+  const dispatch = useDispatch();
+  
   useEffect(()=>{
+    fetchDataOfuserFromBackEnd().then(async (res)=>{
+      const loginedUser = await res.data;
+      console.log(loginedUser,'react ke userke page me')
+      dispatch({
+        type : 'user_loggined',
+        payload : true
+      })
+      setUser(loginedUser)
+    }).catch((error)=>{
+      console.log(error)
+      NavigateUser('/login')
+    })
+  },[setUser, NavigateUser ])
 
-    if(IsUserLoggedIn === false){
-      NavigateUser("/login");
-    }
-  
-   } , [IsUserLoggedIn, NavigateUser])
-  
+
   return (
     <>
     
@@ -56,8 +79,10 @@ export default function UserInfo(props) {
                       </div>
                       <div className='mb-3 for-check'>
                       </div>
-                      <button className="btn btn-primary" onClick={()=>{
-                        setUseronLogin({})
+                      <button className="btn btn-primary" onClick={(e)=>{
+                        e.preventDefault();
+                        axios.post('http://localhost:9000/logout',  { withCredentials: true });
+                        setUser({})
                         NavigateUser("/login")
                       }}>LogOut</button>
                     </div>

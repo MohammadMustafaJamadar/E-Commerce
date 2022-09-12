@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 let Initial_State = {
   products : [],
   cart : [],
+  userLogined : null
 };
 
 let store = configureStore({
@@ -11,6 +12,7 @@ let store = configureStore({
     
 
     switch (type) {
+
       case "fetch_data":
         return {
           ...state,
@@ -41,6 +43,13 @@ let store = configureStore({
         return {
           ...state,
           cart : payload.removeItem
+        };
+
+        case "user_loggined":
+         
+        return {
+          ...state,
+          userLogined: payload,
         };
 
     }

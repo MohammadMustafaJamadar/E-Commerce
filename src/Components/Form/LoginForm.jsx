@@ -4,12 +4,14 @@ import { useNavigate } from "react-router-dom";
 import InputChanger from "../utils/general";
 import { PassWordvalidate } from "../utils/Validation";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+axios.defaults.withCredentials = true;
 
 export default function LoginForm(props) {
-  const {  setUseronLogin } = props;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [ValidationError, setValidationError] = useState(null);
+  const dispatch = useDispatch();
   const navigatetoUser = useNavigate();
 
   const EmailChnager = (event) => {
@@ -28,17 +30,26 @@ export default function LoginForm(props) {
       return;
     } else {
       const userLoginDetail = { email, password };
-      axios.post("http://localhost:9000/login", userLoginDetail).then((res) => {
-        setValidationError(res.data.massage);
-        const userData = res.data.dataOfUser;
-
-        if (userData === undefined) {
+      axios
+        .post("http://localhost:9000/login", userLoginDetail, {
+          withCredentials: true,
+        })
+        .then((res) => {
           setValidationError(res.data.massage);
-        } else {
-          setUseronLogin(userData);
-          navigatetoUser('/user')
-        }
-      });
+          const userData = res.data.dataOfUser;
+          if (userData === undefined) {
+            setValidationError(res.data.massage);
+          } else {
+            dispatch({
+              type : 'user_loggined',
+              payload : true
+            })
+            navigatetoUser("/user");
+          }
+        }).catch((err)=>{
+          console.log(err)
+          navigatetoUser('/login')
+        })
     }
   };
 

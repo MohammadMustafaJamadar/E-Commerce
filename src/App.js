@@ -16,28 +16,43 @@ async function DataFetch() {
   return await axios.post("http://localhost:9000/home");
 }
 
+
+
 const selctorForStore = (state) => {
   return {
     addCart: state.cart,
+    userLogined : state.userLogined
   };
 };
+
+
 
 function App() {
   const dispatch = useDispatch();
   const [errorMassage, setErrorMassage] = useState();
-  const [user, setUseronLogin] = useState({});
-  const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
-  const { addCart } = useSelector(selctorForStore);
+  // const [user, setUseronLogin] = useState({});
+  // const [IsUserLoggedIn, setIsUserLoggedIn] = useState();
+  const { addCart , userLogined } = useSelector(selctorForStore);
 
-  console.log(user)
 
-  useEffect(() => {
-    if (Object.keys(user).length > 0) {
-      setIsUserLoggedIn(true);
-    } else {
-      setIsUserLoggedIn(false);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (Object.keys(user).length > 0) {
+  //     setIsUserLoggedIn(true);
+  //   } else {
+  //     setIsUserLoggedIn(false);
+  //   }
+  // }, [user]);
+
+  console.log(userLogined,'in react app')
+
+  // useEffect(()=>{
+  //   if(userLogined === true){
+  //     setIsUserLoggedIn(true)
+  //   }else{
+  //     setIsUserLoggedIn(false)
+  //   }
+  // },[userLogined])
+
 
   useEffect(() => {
     DataFetch()
@@ -59,7 +74,7 @@ function App() {
   return (
     <>
       <Router>
-        <NavBar title="ApExCart" user={user} IsUserLoggedIn={IsUserLoggedIn} />
+        <NavBar title="ApExCart" />
 
         <Footer />
         <Routes>
@@ -68,9 +83,6 @@ function App() {
             path="/"
             element={
               <Home
-                IsUserLoggedIn={IsUserLoggedIn}
-                setIsUserLoggedIn={setIsUserLoggedIn}
-                user={user}
                 errorMassage={errorMassage}
               />
             }
@@ -79,11 +91,9 @@ function App() {
           <Route exact path="/signup" element={<SignUp />}></Route>
           <Route
             exact
-            path="login"
+            path="/login"
             element={
               <Login
-                setUseronLogin={setUseronLogin}
-                IsUserLoggedIn={IsUserLoggedIn}
               />
             }
           ></Route>
@@ -92,27 +102,16 @@ function App() {
             exact
             path="/user"
             element={
-              IsUserLoggedIn ? (
                 <User
-                  title="Information"
-                  user={user}
-                  setUseronLogin={setUseronLogin}
-                  IsUserLoggedIn={IsUserLoggedIn}
-                  setIsUserLoggedIn={setIsUserLoggedIn}
-                />
-              ) : (
-                <Login
-                  setUseronLogin={setUseronLogin}
-                  IsUserLoggedIn={IsUserLoggedIn}
-                />
-              )
-            }
-          ></Route>
+                  title="Information"   />
+
+              }
+         ></Route>
 
           <Route
             exact
             path="/cart"
-            element={IsUserLoggedIn === true ? <Cart /> : <Login />}
+            element={ <Cart />}
           ></Route>
           <Route exact path="/addproducts" element={<AddProducts />}></Route>
 

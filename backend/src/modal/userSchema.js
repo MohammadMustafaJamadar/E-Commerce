@@ -1,17 +1,18 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const user = new Schema({
-  name : {
-    type : String,
-    required : true
+  name: {
+    type: String,
+    required: true,
   },
 
   email: {
-    type : String,
-    required : true,
-    unique : true
+    type: String,
+    required: true,
+    unique: true,
   },
 
   // number : {
@@ -20,34 +21,58 @@ const user = new Schema({
   //   unique : true
   // },
 
-  password : {
-    type : String,
-    required : true
+  password: {
+    type: String,
+    required: true,
   },
 
-  productCart : {
-    productName : {
-      type : String
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
     },
-    productId : {
-      type : String
+  ],
+
+  productCart: {
+    productName: {
+      type: String,
     },
-    productImage : {
-      type : String
+    productId: {
+      type: String,
+    },
+    productImage: {
+      type: String,
     },
     productDiscription: {
-      type : String
+      type: String,
     },
-    productPrice : {
-      type : Number
+    productPrice: {
+      type: Number,
     },
-    productQty : {
-      type : Number
-    }
+    productQty: {
+      type: Number,
+    },
+  },
+});
+
+user.methods.generatingTokens = async function () {
+  try {
+    let token = jwt.sign(
+      { _id: this._id },
+      "MustafaMJMustafaMJMustafaMJMustafaMJ"
+    );
+
+    this.tokens = this.tokens.concat({ token: token });
+
+    this.save();
+    return token
+  } catch (error) {
+    throw error;
   }
+};
 
-})
-
-const UserData = mongoose.model('userdata' , user)
+const UserData = mongoose.model("userdata", user);
 
 export default UserData;

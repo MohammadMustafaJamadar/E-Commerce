@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function NavBar(props) {
-  const { title,  IsUserLoggedIn } = props;
+  const { title } = props;
   return (
     <>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -34,25 +34,26 @@ export default function NavBar(props) {
               </li>
               
               <li className="nav-item">
-                {IsUserLoggedIn ? null : (
+                {
                   <Link className="nav-link " aria-current="page" to="/signup">
                     SignUp
                   </Link>
-                )}
-              </li>
-              <li className="nav-item">
-                {IsUserLoggedIn ? null : (
-                  <Link className="nav-link " to="/login">
-                    Login
-                  </Link>
-                )}
+                }
               </li>
               <li className="nav-item">
                 {
-                  IsUserLoggedIn ? 
+          
+                  <Link className="nav-link " to="/login">
+                    Login
+                  </Link>
+                }
+              </li>
+              <li className="nav-item">
+                {
+                   
                 <Link className="nav-link " to="/user">
                   User
-                </Link> : null
+                </Link> 
                 }
 
               </li>

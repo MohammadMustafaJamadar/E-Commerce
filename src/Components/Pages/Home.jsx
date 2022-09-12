@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch , useSelector } from "react-redux";
-import axios from 'axios'
 
 const FetchingProducts = (state)=>{
   return {
@@ -17,8 +16,6 @@ export default function Home(props) {
   let [filtered , updatefiltered] = useState([]) 
   const {errorMassage} = props
 
-  // let cartItemLocal = JSON.parse(localStorage.getItem("forAddtoCart"));
-  // cartItemLocal = cartItemLocal === null ? [] : cartItemLocal
   
   useEffect(()=>{
     const filterItems = Products.filter((item)=>{
@@ -81,13 +78,12 @@ export default function Home(props) {
                       <div className="text-center mt-2px" >
                         <button className="btn btn-outline-primary btn-sm " onClick={()=>{
                           let handelCart = (element)=>{
-                            axios.post("http://localhost:9000/cart" , element)
+                            // axios.post("http://localhost:9000/cart" , element)
                             dispatch({
                               type:"Add _in_Cart",
                               payload:{ element }
                             })
 
-                            // localStorage.setItem("forAddtoCart" , JSON.stringify([...cartItemLocal,element]))
 
                           }
                           handelCart(element);
